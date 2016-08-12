@@ -13,7 +13,7 @@ function multiindex{T<:Integer}(m::Integer,p::T)
         ind=map(o -> (o<=q), ord)
         n=sum(ind)
         Iq = [I1[ind,:] (q-sum(I1[ind,:],2))]
-        I = [I, Iq]
+        I = [I; Iq]
     end
     return I
 end
