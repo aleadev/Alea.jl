@@ -19,5 +19,5 @@ function multiindex{T<:Integer}(m::Integer,p::T)
 end
 
 function multiindex_order{T<:Integer}(I::AbstractArray{T})
-    return sum(I,2)
+  return vec(sum(I,2))
 end
