@@ -7,6 +7,7 @@ end
 module PkgTests
 include("test_multiindex.jl")
 include("test_distributions.jl")
+include("test_gpc.jl")
 end
 
 if throw_on_failure

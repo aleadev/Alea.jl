@@ -6,7 +6,7 @@ export
 
     Uniform,
     Normal,
-    
+
     mean,
     var,
     skewness,
@@ -15,9 +15,13 @@ export
     pdf,
     cdf,
     quantile,
-    rand
+    rand,
+
+    GPCGerm,
+    FixedGPCGerm
 
 include("multiindex.jl")
 include("distributions.jl")
+include("gpc.jl")
 
 end
