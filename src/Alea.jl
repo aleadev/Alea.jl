@@ -4,6 +4,13 @@ export
     multiindex,
     multiindex_order,
 
+    ChebyshevTPolynomials,
+    ChebyshevUPolynomials,
+
+    recurrence_coeff,
+    evaluate,
+
+
     Uniform,
     Normal,
 
@@ -23,5 +30,6 @@ export
 include("multiindex.jl")
 include("distributions.jl")
 include("gpc.jl")
+include("bases.jl")
 
 end
