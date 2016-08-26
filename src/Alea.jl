@@ -4,6 +4,8 @@ export
     multiindex,
     multiindex_order,
 
+    FunctionSystem,
+    PolynomialSystem,
     ChebyshevTPolynomials,
     ChebyshevUPolynomials,
 
@@ -11,8 +13,17 @@ export
     evaluate,
 
 
+    Distribution,
+    UnivariateDistribution,
+    ContinuousUnivariateDistribution,
+
     Uniform,
     Normal,
+    Arcsine,
+    Exponential,
+    Beta,
+    Gamma,
+    InverseGamma,
 
     mean,
     var,
@@ -29,7 +40,7 @@ export
 
 include("multiindex.jl")
 include("distributions.jl")
-include("gpc.jl")
 include("bases.jl")
+include("gpc.jl")
 
 end

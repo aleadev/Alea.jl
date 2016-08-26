@@ -5,8 +5,13 @@ typealias GPCDistribution Distributions.ContinuousUnivariateDistribution
 
 abstract GPCGerm
 
+immutable GPCPair
+  dist::GPCDistribution
+  polysys::PolynomialSystem
+end
+
 immutable FixedGPCGerm <: GPCGerm
-  distributions::Array{GPCDistribution}
+  pairs::Array{GPCPair}
 end
 function FixedGPCGerm(dist::GPCDistribution, n::Int)
   FixedGPCGerm(fill(dist, n))

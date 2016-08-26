@@ -1,6 +1,16 @@
 using Distributions:
+
+  Distribution,
+  UnivariateDistribution,
+  ContinuousUnivariateDistribution,
+
   Uniform,
   Normal,
+  Arcsine,
+  Exponential,
+  Beta,
+  Gamma,
+  InverseGamma,
 
   mean,
   var,
