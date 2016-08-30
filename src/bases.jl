@@ -1,15 +1,32 @@
-abstract FunctionSystem
-
-function evaluate(basis::FunctionSystem, x::Real)
-  throw
+macro mustimplement(sig)
+    fname = sig.args[1]
+    arg1 = sig.args[2]
+    if isa(arg1,Expr)
+        arg1 = arg1.args[1]
+    end
+    :($(esc(sig)) = error(typeof($(esc(arg1))),
+                          " must implement ", $(Expr(:quote,fname))))
 end
 
+
+
+abstract FunctionSystem
+
+@mustimplement evaluate{T <: Number}(basis::FunctionSystem, n::Integer, x::T)
 export evaluate
 
-abstract PolynomialSystem <: FunctionSystem
 
-function evaluate(basis::PolynomialSystem, n::Integer, x::Real)
-  y = zeros(n+1)
+
+"The base type for systems of (orthogonal) polynomials"
+abstract PolynomialSystem <: FunctionSystem
+export PolynomialSystem
+
+@mustimplement recurrence_coeff(basis::PolynomialSystem, i::Integer)
+export recurrence_coeff
+
+"Evaluate polynomials at `x` up to degree `n-1`"
+function evaluate{T <: Number}(basis::PolynomialSystem, n::Integer, x::T)
+  y = zeros(T, n+1)
   y[1] = 1
   for k=0:n-1
     a, b, c = recurrence_coeff(basis, k)
@@ -21,34 +38,46 @@ function evaluate(basis::PolynomialSystem, n::Integer, x::Real)
   return y
 end
 
-function recurrence_coeff(basis::PolynomialSystem, i::Integer)
-  throw
-end
+
+"The stochastic Hermite polynomials"
+immutable HermitePolynomials <: PolynomialSystem; end
+export HermitePolynomials
+
+recurrence_coeff(basis::HermitePolynomials, k::Integer) =
+  0, 1, k
 
 
+"The Laguerre polynomials"
 immutable LaguerrePolynomials <: PolynomialSystem
-  alpha::Real
+  α::Real
 end
+export LaguerrePolynomials
 
-recurrence_coeff(basis::LaguerrePolynomials, k::Integer) =
-  (2*k + 1.0 + basis.alpha) / (k+1.0),
-  -1.0 / (k+1.0),
-  (k + basis.alpha) / (k+1.0)
+recurrence_coeff(L::LaguerrePolynomials, k::Integer) =
+  (2k + 1 + L.α) / (k+1),
+  -1 / (k+1),
+  (k + L.α) / (k+1)
 
 
 
 immutable LegendrePolynomials <: PolynomialSystem; end
+export LegendrePolynomials
 
-recurrence_coeff(basis::LegendrePolynomials, k::Integer) =  0, (2*k+1.0)/(k+1.0), k / (k+1.0)
+recurrence_coeff(basis::LegendrePolynomials, k::Integer) =
+  0, (2*k+1) // (k+1), k // (k+1)
 
 
 
 immutable ChebyshevTPolynomials <: PolynomialSystem; end
+export ChebyshevTPolynomials
 
-recurrence_coeff(basis::ChebyshevTPolynomials, k::Integer) = 0, 2 - (k==0), 1
+recurrence_coeff(basis::ChebyshevTPolynomials, k::Integer) =
+  0, 2 - (k==0), 1
 
 
 
 immutable ChebyshevUPolynomials <: PolynomialSystem; end
+export ChebyshevUPolynomials
 
-recurrence_coeff(basis::ChebyshevUPolynomials, k::Integer) =  0, 2, 1+k
+recurrence_coeff(basis::ChebyshevUPolynomials, k::Integer) =
+  0, 2, 1+k

@@ -3,7 +3,7 @@ using Alea, FactCheck
 
 
 facts("GPC") do
-  germ = FixedGPCGerm(Normal(0,1), 4)
+  germ = GPCGerm(Normal(0,1), 4)
   #=
   @show rand(germ)
   @show pdf(germ, [0.3, 0.4, 0.5, 0.6])

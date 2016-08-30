@@ -4,11 +4,15 @@ export
     multiindex,
     multiindex_order,
 
+#=
     FunctionSystem,
     PolynomialSystem,
+    HermitePolynomials,
+    LegendrePolynomials,
+    LaguerrePolynomials,
     ChebyshevTPolynomials,
     ChebyshevUPolynomials,
-
+=#
     recurrence_coeff,
     evaluate,
 
