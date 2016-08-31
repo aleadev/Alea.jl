@@ -1,12 +1,20 @@
 language: julia
+
 os:
   - linux
+  
 julia:
   - 0.4
   - 0.5
   - nightly
-notifications:
-  email: false
+  
+#notifications:
+#  email:
+#    recipients:
+#      e.zander@tu-bs.de
+#    on_success: change
+#    on_failure: always
+    
 #script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 #  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("Alea"); Pkg.test("Alea"; coverage=true)'
