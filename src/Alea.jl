@@ -42,6 +42,7 @@ export
     GPCGerm,
     FixedGPCGerm
 
+include("tools.jl")
 include("multiindex.jl")
 include("distributions.jl")
 include("bases.jl")

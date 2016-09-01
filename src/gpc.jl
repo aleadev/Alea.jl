@@ -28,8 +28,9 @@ end
 function GPCGerm(dist::GPCDistribution, n::Int)
   GPCGerm(fill(GPCPair(dist), n))
 end
+
+import Base.length
 length(germ::GPCGerm) = length(germ.pairs)
-export length
 
 distributions(germ::GPCGerm) = [pair.dist for pair in germ.pairs]
 

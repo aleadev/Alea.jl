@@ -5,6 +5,7 @@ if !isdefined(:throw_on_failure)
 end
 
 module PkgTests
+include("test_tools.jl")
 include("test_multiindex.jl")
 include("test_distributions.jl")
 include("test_bases.jl")
