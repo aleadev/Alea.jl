@@ -70,4 +70,5 @@ immutable ChebyshevUPolynomials <: PolynomialSystem; end
 export ChebyshevUPolynomials
 
 recurrence_coeff(basis::ChebyshevUPolynomials, k::Integer) =
-  0, 2, 1+k
+  0, 2, 1
+
