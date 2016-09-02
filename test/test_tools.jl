@@ -14,4 +14,8 @@ facts("Tools") do
     @fact (@returntype g(3))  --> Union{ASCIIString, Int64}
   end
 
+  context("tuple_array") do
+    @fact flip_tuple_array([(1,"abc"),(2,"def")]) --> ([1, 2], ["abc", "def"])
+
+  end
 end
