@@ -9,3 +9,18 @@ facts("OrthPoly") do
     @pending norm(polys, 3) --> 1
   end
 end
+
+import FactCheck.roughly
+roughly(A::Tuple; kvtols...) = (B::Tuple) -> begin
+    length(A) != length(B) && return false
+    return all(a->roughly(a[1]; kvtols...)(a[2]), zip(A,B) )
+end
+
+facts("GaussIntegration") do
+  @fact gauss_rule(HermitePolynomials(), 1) --> ([0.0], [1.0])
+  @fact gauss_rule(HermitePolynomials(), 2) --> ([-1.0, 1.0], [0.5, 0.5])
+  @fact gauss_rule(HermitePolynomials(), 3)[1] --> roughly([-√3, 0, √3])
+  @fact gauss_rule(HermitePolynomials(), 3)[2] --> roughly([1/6, 4/6, 1/6])
+
+  @fact gauss_rule(HermitePolynomials(), 3) --> roughly(([-√3, 0, √3], [1/6, 4/6, 1/6]))
+end

@@ -14,6 +14,27 @@ export PolynomialSystem
 @mustimplement recurrence_coeff(basis::PolynomialSystem, i::Integer)
 export recurrence_coeff
 
+@mustimplement issymmetric(basis::PolynomialSystem)
+export issymmetric
+
+function rc_array(basis::PolynomialSystem, n::Integer)
+  arr = [recurrence_coeff(basis, k) for k in 0:n]
+  flip_tuple_array(arr)
+end
+
+function rc_array_monic(basis::PolynomialSystem, n::Integer)
+  r = rc_array(basis::PolynomialSystem, n::Integer)
+  # extract columns
+  a = -r[1]
+  b = r[3][2:end]
+  c = r[2][:]
+
+  # convert to monic polynomials
+  α = a ./ c
+  β = b ./ (c[1:end-1] .* c[2:end])
+  return α, β
+end
+
 "Evaluate polynomials at `x` up to degree `n-1`"
 function evaluate{T <: Number}(basis::PolynomialSystem, n::Integer, x::T)
   y = zeros(T, n+1)
@@ -33,13 +54,25 @@ end
 immutable HermitePolynomials <: PolynomialSystem; end
 export HermitePolynomials
 
-recurrence_coeff(basis::HermitePolynomials, k::Integer) =
+recurrence_coeff(::HermitePolynomials, k::Integer) =
   0, 1, k
+
+issymmetric(::HermitePolynomials) = true
+
+
+"The Legendre polynomials"
+immutable LegendrePolynomials <: PolynomialSystem; end
+export LegendrePolynomials
+
+recurrence_coeff(::LegendrePolynomials, k::Integer) =
+  0, (2*k+1) // (k+1), k // (k+1)
+
+issymmetric(::LegendrePolynomials) = true
 
 
 "The Laguerre polynomials"
-immutable LaguerrePolynomials <: PolynomialSystem
-  α::Real
+immutable LaguerrePolynomials{T<:Real} <: PolynomialSystem
+  α::T
 end
 export LaguerrePolynomials
 
@@ -48,87 +81,65 @@ recurrence_coeff(L::LaguerrePolynomials, k::Integer) =
   -1 / (k+1),
   (k + L.α) / (k+1)
 
-
-
-immutable LegendrePolynomials <: PolynomialSystem; end
-export LegendrePolynomials
-
-recurrence_coeff(basis::LegendrePolynomials, k::Integer) =
-  0, (2*k+1) // (k+1), k // (k+1)
-
+issymmetric(::LaguerrePolynomials) = false
 
 
 immutable ChebyshevTPolynomials <: PolynomialSystem; end
 export ChebyshevTPolynomials
 
 recurrence_coeff(basis::ChebyshevTPolynomials, k::Integer) =
-  0, 2 - (k==0), 1
+  0, (k==0 ? 1 : 2), 1
 
+issymmetric(::ChebyshevTPolynomials) = true
 
 
 immutable ChebyshevUPolynomials <: PolynomialSystem; end
 export ChebyshevUPolynomials
 
-recurrence_coeff(basis::ChebyshevUPolynomials, k::Integer) =
+recurrence_coeff(::ChebyshevUPolynomials, k::Integer) =
   0, 2, 1
 
+issymmetric(::ChebyshevUPolynomials) = true
 
 
 
 
-  function gauss_rule(basis::PolynomialSystem, n::Integer)
+function gauss_rule(basis::PolynomialSystem, n::Integer)
+  # W. GAUTSCHI, ORTHOGONAL POLYNOMIALS AND QUADRATURE, Electronic
+  # Transactions on Numerical Analysis, Volume 9, 1999, pp. 65-76.
+
+  α, β = rc_array_monic(basis, n-1)
+
+  # set up Jacobi matrix and compute eigenvalues
+  J = float(diagm(α) + diagm(√β,1) + diagm(√β,-1))
+  x, V = eig(J)
+  w = vec(V[1,:]'.^2)
+  w = w / sum(w);
+
+  # symmetrise
+  if issymmetric(basis)
+      x=0.5*(x-reverse(x));
+      w=0.5*(w+reverse(w));
   end
+  return (x,w)
+end
+export gauss_rule
+
+#=
+@show typeof([recurrence_coeff(LaguerrePolynomials(1.2),i) for  i in []])
+@show typeof([recurrence_coeff(HermitePolynomials(),i) for  i in []])
+@show typeof([recurrence_coeff(HermitePolynomials(),i) for  i in [1,2,3]])
+@show [gauss_rule(HermitePolynomials(), i) for i in 2:5]
+@show [gauss_rule(LaguerrePolynomials(1.2), i) for i in 3:5]
 
 
-  #module foobar
-  rc{T<:Integer}(k::Union{T,Array{T,1}}) =
-    zero(k), 1+zero(k), k
-  rc{T<:Integer}(k::AbstractArray{T,1}) = rc(Array{T,1}(k))
-  rc(1)
-  rc(3)
-  rc(1:3)
+a = [recurrence_coeff(LegendrePolynomials(), i) for i in 1:5]
+@show a
+@show typeof(a)
+@show flip_tuple_array(a)
 
-  function recurrence_coeff(basis::PolynomialSystem, n::AbstractArray)
-    a1,b1,c1=recurrence_coeff(basis, n[1])
-    N=length(n)
-    (a,b,c)=(Array{typeof(a1),1}(N), Array{typeof(b1),1}(N), Array{typeof(c1),1}(N))
-    for i=1:N
-      (a[i], b[i], c[i]) = recurrence_coeff(basis, n[i])
-    end
-    return (a,b,c)
-  end
-
-
-  eltypes{T1}(::Type{Tuple{T1}}) = (T1,)
-  eltypes{T1,T2}(::Type{Tuple{T1,T2}}) = (T1, T2)
-  eltypes{T1,T2,T3}(::Type{Tuple{T1,T2,T3}}) = (T1, T2, T3)
-
-  function flip_tuple_array{T<:Tuple}(a::Array{T})
-    types = eltypes(T)
-    N = length(a)
-    b = [Array{t}(N) for t in types]
-    for i=1:length(types)
-      for j=1:N
-        b[i][j] = a[j][i]
-      end
-    end
-    return (b...)
-  end
-  function recurrence_coeff2(basis::PolynomialSystem, n::AbstractArray)
-    flip_tuple_array([recurrence_coeff(basis, k) for k in n])
-  end
-
-  a = [recurrence_coeff(LegendrePolynomials(), i) for i in 1:5]
-  @show a
-  @show typeof(a)
-  @show flip_tuple_array(a)
-
-  @show recurrence_coeff2(HermitePolynomials(),Array(0:3))
-  @show recurrence_coeff(LegendrePolynomials(),Array(0:3))
-  @show recurrence_coeff2(LegendrePolynomials(),Array(0:3))
-  @show recurrence_coeff(ChebyshevTPolynomials(),Array(0:5))
-  @show recurrence_coeff(ChebyshevUPolynomials(),Array(0:5))
-
-
-#end
-#
+@show recurrence_coeff(HermitePolynomials(),Array(0:3))
+@show recurrence_coeff(LegendrePolynomials(),Array(0:3))
+@show recurrence_coeff(ChebyshevTPolynomials(),Array(0:5))
+@show recurrence_coeff(ChebyshevUPolynomials(),Array(0:5))
+=#
