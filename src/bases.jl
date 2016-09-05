@@ -121,7 +121,7 @@ function gauss_rule(basis::PolynomialSystem, n::Integer)
       x=0.5*(x-reverse(x));
       w=0.5*(w+reverse(w));
   end
-  return (x,w)
+  return (x::Vector{Float64},w::Vector{Float64})
 end
 export gauss_rule
 
