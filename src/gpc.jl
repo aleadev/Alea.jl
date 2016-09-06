@@ -1,5 +1,7 @@
-using Alea
-using Distributions
+module GPC
+
+using ..Distributions
+using ..Bases
 
 typealias GPCDistribution Distributions.ContinuousUnivariateDistribution
 
@@ -45,4 +47,6 @@ end
 import Distributions.cdf
 function cdf{T<:Real}(germ::GPCGerm, x::Vector{T})
   prod([cdf(dist, xi) for (dist,xi) in zip(distributions(germ), x)])
+end
+
 end

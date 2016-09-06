@@ -1,3 +1,4 @@
+module Multiindex
 #typealias MultiindexSet{T} Array{T}
 #typ MultiindexSet{T} <: AbstractArray{T, 2}
 
@@ -20,4 +21,10 @@ end
 
 function multiindex_order{T<:Integer}(I::AbstractArray{T})
   return vec(sum(I,2))
+end
+
+export
+    multiindex,
+    multiindex_order
+
 end

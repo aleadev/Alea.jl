@@ -1,3 +1,5 @@
+module QuadGrid
+
 import Iterators
 
 
@@ -42,6 +44,7 @@ tensorise_rulesX(rules::Vector{Tuple{Any,Any}}) =
   ([r[1] for r in rules], [r[2] for r in rules])
 
 export tensorise_rules
+end
 
 #(tensorise_nodes([r[1] for r in rules]), tensorise_weights([r[2] for r in rules]))
 

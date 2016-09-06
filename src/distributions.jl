@@ -1,3 +1,5 @@
+module Distributions
+
 using Distributions:
 
   Distribution,
@@ -21,3 +23,29 @@ using Distributions:
   cdf,
   quantile,
   rand
+
+export
+    Distribution,
+    UnivariateDistribution,
+    ContinuousUnivariateDistribution,
+
+    Uniform,
+    Normal,
+    Arcsine,
+    Exponential,
+    Beta,
+    Gamma,
+    InverseGamma,
+
+    mean,
+    var,
+    skewness,
+    kurtosis,
+    moment,
+    pdf,
+    cdf,
+    quantile,
+    rand
+
+
+end

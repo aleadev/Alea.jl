@@ -1,52 +1,14 @@
 module Alea
 
-export
-    multiindex,
-    multiindex_order,
-
-#=
-    FunctionSystem,
-    PolynomialSystem,
-    HermitePolynomials,
-    LegendrePolynomials,
-    LaguerrePolynomials,
-    ChebyshevTPolynomials,
-    ChebyshevUPolynomials,
-=#
-    recurrence_coeff,
-    evaluate,
-
-
-    Distribution,
-    UnivariateDistribution,
-    ContinuousUnivariateDistribution,
-
-    Uniform,
-    Normal,
-    Arcsine,
-    Exponential,
-    Beta,
-    Gamma,
-    InverseGamma,
-
-    mean,
-    var,
-    skewness,
-    kurtosis,
-    moment,
-    pdf,
-    cdf,
-    quantile,
-    rand,
-
-    GPCGerm,
-    FixedGPCGerm
-
 include("tools.jl")
 include("multiindex.jl")
 include("distributions.jl")
 include("bases.jl")
 include("quadgrid.jl")
 include("gpc.jl")
+
+using .Bases, .Multiindex, .Distributions, .QuadGrid, .GPC
+
+export .Multiindex.*
 
 end

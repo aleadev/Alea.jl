@@ -11,7 +11,7 @@ facts("Tools") do
   end
 
   context("@returntype") do
-    @fact (@returntype g(3))  --> Union{ASCIIString, Int64}
+    @fact (@returntype g(3))  --> Union{typeof(g(0)), typeof(g(1))}
   end
 
   context("tuple_array") do

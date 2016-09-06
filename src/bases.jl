@@ -1,21 +1,19 @@
-using .Internal
+module Bases
+
+using ..Internal
 
 abstract FunctionSystem
 
 @mustimplement evaluate{T <: Number}(basis::FunctionSystem, n::Integer, x::T)
-export evaluate
 
 
 
 "The base type for systems of (orthogonal) polynomials"
 abstract PolynomialSystem <: FunctionSystem
-export PolynomialSystem
 
 @mustimplement recurrence_coeff(basis::PolynomialSystem, i::Integer)
-export recurrence_coeff
 
 @mustimplement issymmetric(basis::PolynomialSystem)
-export issymmetric
 
 function rc_array(basis::PolynomialSystem, n::Integer)
   arr = [recurrence_coeff(basis, k) for k in 0:n]
@@ -52,7 +50,6 @@ end
 
 "The stochastic Hermite polynomials"
 immutable HermitePolynomials <: PolynomialSystem; end
-export HermitePolynomials
 
 recurrence_coeff(::HermitePolynomials, k::Integer) =
   0, 1, k
@@ -62,7 +59,6 @@ issymmetric(::HermitePolynomials) = true
 
 "The Legendre polynomials"
 immutable LegendrePolynomials <: PolynomialSystem; end
-export LegendrePolynomials
 
 recurrence_coeff(::LegendrePolynomials, k::Integer) =
   0, (2*k+1) // (k+1), k // (k+1)
@@ -74,7 +70,6 @@ issymmetric(::LegendrePolynomials) = true
 immutable LaguerrePolynomials{T<:Real} <: PolynomialSystem
   α::T
 end
-export LaguerrePolynomials
 
 recurrence_coeff(L::LaguerrePolynomials, k::Integer) =
   (2k + 1 + L.α) / (k+1),
@@ -85,7 +80,6 @@ issymmetric(::LaguerrePolynomials) = false
 
 
 immutable ChebyshevTPolynomials <: PolynomialSystem; end
-export ChebyshevTPolynomials
 
 recurrence_coeff(basis::ChebyshevTPolynomials, k::Integer) =
   0, (k==0 ? 1 : 2), 1
@@ -94,7 +88,6 @@ issymmetric(::ChebyshevTPolynomials) = true
 
 
 immutable ChebyshevUPolynomials <: PolynomialSystem; end
-export ChebyshevUPolynomials
 
 recurrence_coeff(::ChebyshevUPolynomials, k::Integer) =
   0, 2, 1
@@ -123,7 +116,6 @@ function gauss_rule(basis::PolynomialSystem, n::Integer)
   end
   return (x::Vector{Float64},w::Vector{Float64})
 end
-export gauss_rule
 
 #=
 @show typeof([recurrence_coeff(LaguerrePolynomials(1.2),i) for  i in []])
@@ -143,3 +135,17 @@ a = [recurrence_coeff(LegendrePolynomials(), i) for i in 1:5]
 @show recurrence_coeff(ChebyshevTPolynomials(),Array(0:5))
 @show recurrence_coeff(ChebyshevUPolynomials(),Array(0:5))
 =#
+
+export evaluate
+export PolynomialSystem
+export recurrence_coeff
+export issymmetric
+
+export HermitePolynomials
+export LegendrePolynomials
+export LaguerrePolynomials
+export ChebyshevTPolynomials
+export ChebyshevUPolynomials
+export gauss_rule
+
+end
