@@ -49,4 +49,8 @@ function cdf{T<:Real}(germ::GPCGerm, x::Vector{T})
   prod([cdf(dist, xi) for (dist,xi) in zip(distributions(germ), x)])
 end
 
+export GPCGerm,
+       GPCPair
+
+
 end

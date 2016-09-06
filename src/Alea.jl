@@ -7,8 +7,11 @@ include("bases.jl")
 include("quadgrid.jl")
 include("gpc.jl")
 
-using .Bases, .Multiindex, .Distributions, .QuadGrid, .GPC
-
-export .Multiindex.*
+using Reexport
+@reexport using .Multiindex
+@reexport using .Distributions
+@reexport using .Bases
+@reexport using .QuadGrid
+@reexport using .GPC
 
 end

@@ -1,3 +1,16 @@
+"""
+Implementation of different function systems for the representation of spectral
+expansions. Currently, only orthogonal polynomials (for gpc) are supported.
+
+@show recurrence_coeff(HermitePolynomials(),Array(0:3))
+@show recurrence_coeff(LegendrePolynomials(),Array(0:3))
+@show recurrence_coeff(ChebyshevTPolynomials(),Array(0:5))
+@show recurrence_coeff(ChebyshevUPolynomials(),Array(0:5))
+
+@show [gauss_rule(HermitePolynomials(), i) for i in 2:5]
+@show [gauss_rule(LaguerrePolynomials(1.2), i) for i in 3:5]
+
+"""
 module Bases
 
 using ..Internal
@@ -117,35 +130,18 @@ function gauss_rule(basis::PolynomialSystem, n::Integer)
   return (x::Vector{Float64},w::Vector{Float64})
 end
 
-#=
-@show typeof([recurrence_coeff(LaguerrePolynomials(1.2),i) for  i in []])
-@show typeof([recurrence_coeff(HermitePolynomials(),i) for  i in []])
-@show typeof([recurrence_coeff(HermitePolynomials(),i) for  i in [1,2,3]])
-@show [gauss_rule(HermitePolynomials(), i) for i in 2:5]
-@show [gauss_rule(LaguerrePolynomials(1.2), i) for i in 3:5]
 
-
-a = [recurrence_coeff(LegendrePolynomials(), i) for i in 1:5]
-@show a
-@show typeof(a)
-@show flip_tuple_array(a)
-
-@show recurrence_coeff(HermitePolynomials(),Array(0:3))
-@show recurrence_coeff(LegendrePolynomials(),Array(0:3))
-@show recurrence_coeff(ChebyshevTPolynomials(),Array(0:5))
-@show recurrence_coeff(ChebyshevUPolynomials(),Array(0:5))
-=#
-
-export evaluate
 export PolynomialSystem
+export evaluate
 export recurrence_coeff
 export issymmetric
+export gauss_rule
 
 export HermitePolynomials
 export LegendrePolynomials
 export LaguerrePolynomials
 export ChebyshevTPolynomials
 export ChebyshevUPolynomials
-export gauss_rule
+
 
 end
