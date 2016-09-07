@@ -1,4 +1,6 @@
 using ..Multiindex
+using ..Internal
+
 import Iterators
 
 tensorise_weights{T}(w::Vector{Vector{T}}) = kron(w...)

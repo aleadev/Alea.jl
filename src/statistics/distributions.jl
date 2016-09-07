@@ -1,5 +1,3 @@
-module Distributions
-
 using Distributions
 
 export
@@ -24,5 +22,3 @@ export
     cdf,
     quantile,
     rand
-
-end

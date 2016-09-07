@@ -117,7 +117,8 @@ function gauss_rule(basis::PolynomialSystem, n::Integer)
   α, β = rc_array_monic(basis, n-1)
 
   # set up Jacobi matrix and compute eigenvalues
-  J = float(diagm(α) + diagm(√β,1) + diagm(√β,-1))
+  J = SymTridiagonal(α, √β)
+  #J = float(diagm(α) + diagm(√β,1) + diagm(√β,-1))
   x, V = eig(J)
   w = vec(V[1,:]'.^2)
   w = w / sum(w);

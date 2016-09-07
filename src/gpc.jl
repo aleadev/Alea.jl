@@ -1,9 +1,9 @@
 module GPC
 
-using ..Distributions
+using ..Statistics
 using ..Bases
 
-typealias GPCDistribution Distributions.ContinuousUnivariateDistribution
+typealias GPCDistribution ContinuousUnivariateDistribution
 
 "A gpc pair, capturing the pairing of distributions with systems of orthogonal polymials"
 immutable GPCPair
