@@ -1,15 +1,19 @@
-using QuadGrid
+using Alea, FactCheck
+
+#=
 @show smolyak_grid(3, 4)
 
 
-using Alea
 polys = [HermitePolynomials(), LegendrePolynomials(), LaguerrePolynomials(0.0)]
 @show polys
 rules = [Alea.gauss_rule(P, 3) for P in polys]
 (I, factors) = smolyak_grid(3, 4)
 @show collect_rules(I, factors, [Alea.gauss_rule(HermitePolynomials(), i) for i=1:4])
 
-end
+(I, factors) = smolyak_grid(2, 7)
+@show collect_rules(I, factors, [Alea.gauss_rule(HermitePolynomials(), i) for i=1:7])
+=#
+
 
 #(tensorise_nodes([r[1] for r in rules]), tensorise_weights([r[2] for r in rules]))
 

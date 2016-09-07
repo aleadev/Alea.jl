@@ -10,12 +10,6 @@ facts("OrthPoly") do
   end
 end
 
-import FactCheck.roughly
-roughly(A::Tuple; kvtols...) = (B::Tuple) -> begin
-    length(A) != length(B) && return false
-    return all(a->roughly(a[1]; kvtols...)(a[2]), zip(A,B) )
-end
-
 facts("GaussIntegration") do
   @fact gauss_rule(HermitePolynomials(), 1) --> ([0.0], [1.0])
   @fact gauss_rule(HermitePolynomials(), 2) --> ([-1.0, 1.0], [0.5, 0.5])

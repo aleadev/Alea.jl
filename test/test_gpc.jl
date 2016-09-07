@@ -1,7 +1,5 @@
 using Alea, FactCheck
 
-
-
 facts("GPC") do
   germ = GPCGerm(Normal(0,1), 4)
   #=
