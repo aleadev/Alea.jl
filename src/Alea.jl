@@ -1,17 +1,17 @@
 module Alea
 
-include("tools.jl")
+include("internal/Internal.jl")
 include("multiindex.jl")
 include("distributions.jl")
 include("bases.jl")
-include("quadgrid.jl")
+include("quadrature/Quadrature.jl")
 include("gpc.jl")
 
 using Reexport
 @reexport using .Multiindex
 @reexport using .Distributions
 @reexport using .Bases
-@reexport using .QuadGrid
+@reexport using .Quadrature
 @reexport using .GPC
 
 end

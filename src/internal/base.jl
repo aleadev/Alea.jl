@@ -1,5 +1,3 @@
-module Internal
-
 macro mustimplement(sig)
     fname = sig.args[1]
     arg1 = sig.args[2]
@@ -33,5 +31,3 @@ function flip_tuple_array{T<:Tuple}(a::Array{T})
   return (b...)
 end
 export flip_tuple_array
-
-end
