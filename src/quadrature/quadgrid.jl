@@ -1,4 +1,4 @@
-using ..Multiindex
+using ..Math
 using ..Internal
 
 import Iterators

@@ -1,5 +1,3 @@
-module GPC
-
 using ..Statistics
 using ..Bases
 
@@ -51,6 +49,3 @@ end
 
 export GPCGerm,
        GPCPair
-
-
-end

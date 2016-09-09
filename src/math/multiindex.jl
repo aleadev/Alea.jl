@@ -1,4 +1,3 @@
-module Multiindex
 #typealias MultiindexSet{T} Array{T}
 #typ MultiindexSet{T} <: AbstractArray{T, 2}
 
@@ -26,5 +25,3 @@ end
 export
     multiindex,
     multiindex_order
-
-end
