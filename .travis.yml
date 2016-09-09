@@ -16,8 +16,9 @@ notifications:
 #    on_success: change
 #    on_failure: always
 
-#script:
-#  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-#  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("Alea"); Pkg.test("Alea"; coverage=true)'
-#after_success:
-#- julia -e 'cd(Pkg.dir("Alea")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
+script:
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("Alea"); Pkg.test("Alea"; coverage=true)'
+  
+after_success:
+  - julia -e 'cd(Pkg.dir("Alea")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
