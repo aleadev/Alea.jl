@@ -1,5 +1,8 @@
 using Distributions
 
+
+_dummy_func_for_code_coverage(x) = x
+
 export
     Distribution,
     UnivariateDistribution,

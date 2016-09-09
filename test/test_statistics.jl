@@ -8,4 +8,6 @@ facts("Distributions") do
     @fact var(U) --> roughly(4//3) "variance"
   end
 
+  @fact Statistics._dummy_func_for_code_coverage(1) --> 1
+
 end

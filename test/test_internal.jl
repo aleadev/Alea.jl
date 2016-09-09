@@ -5,7 +5,7 @@ using Alea.Internal
 
 g(x) = (x>0) ? "" : 0
 
-facts("Tools") do
+facts("base") do
 
   context("@mustimplement") do
   end
@@ -18,4 +18,12 @@ facts("Tools") do
     @fact flip_tuple_array([(1,"abc"),(2,"def")]) --> ([1, 2], ["abc", "def"])
 
   end
+end
+
+facts("array") do
+  @fact tensorise([1,2,3], [4,5], [6 7 8]) --> [
+    1 2 3 1 2 3 1 2 3 1 2 3 1 2 3 1 2 3
+    4 4 4 5 5 5 4 4 4 5 5 5 4 4 4 5 5 5
+    6 6 6 6 6 6 7 7 7 7 7 7 8 8 8 8 8 8
+  ]
 end
