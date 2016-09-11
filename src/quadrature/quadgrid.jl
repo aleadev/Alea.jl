@@ -39,7 +39,7 @@ collect_rules(I, factors, rules) = begin
     rule_i = rules[vec(I[i,:])]
     (x_i, w_i) = tensorise_rules(rule_i)
     x = hcat(x, x_i)
-    w = vcat(w, w_i)
+    w = vcat(w, factors[i]*w_i)
   end
   (x, w)
 end

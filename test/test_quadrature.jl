@@ -1,5 +1,25 @@
 using Alea, FactCheck
 
+facts("smolyak") do
+
+  colvec{T}(x::Vector{T}) = reshape(x, (length(x), 1))
+  rowvec{T}(x::Vector{T}) = reshape(x, (1, length(x)))
+
+  typealias Rule1d Tuple{Vector{Float64}, Vector{Float64}}
+  (G, factors) = smolyak_grid(3, 2)
+  on01 = (x::Vector{Float64},w::Vector{Float64}) -> ((x+1)/2,w)::Rule1d
+  rules = [on01(gauss_rule(LegendrePolynomials(), i)...)::Rule1d for i=1:5]
+  (x,w)=collect_rules(G, factors, rules)
+
+  I=multiindex(3, 5)
+  x = reshape(x, (1, size(x)...))
+  II=vec(squeeze(prod(x.^I, 2), 2)*reshape(w, (size(w)...,1)))
+  II2=squeeze(prod(1./(I+1),2),2)
+  ex1 = BitArray{1}(map(≈,II,II2))
+  ex2 = vec(sum(floor(I/2),2)).<2
+  @fact ex1 --> ex2
+end
+
 #=
 @show smolyak_grid(3, 4)
 
