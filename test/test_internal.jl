@@ -20,7 +20,16 @@ facts("base") do
   end
 end
 
+facts("array_slice") do
+  A = [1 2 3; 4 5 6];
+  @fact [(i, copy(r)) for (i,r) in enumerate(rows(A))] --> [(1,[1,2,3]), (2,[4,5,6])]
+  @fact [(i, copy(c)) for (i,c) in enumerate(columns(A))] --> [(1,[1,4]), (2,[2,5]), (3,[3,6])]
+end
+
 facts("array") do
+  @fact rowvec([1.0, 2.0]) --> [1.0 2.0]
+  @fact colvec([1.0, 2.0]) --> [1.0 2.0]'
+
   @fact tensorise([1,2,3], [4,5], [6 7 8]) --> [
     1 2 3 1 2 3 1 2 3 1 2 3 1 2 3 1 2 3
     4 4 4 5 5 5 4 4 4 5 5 5 4 4 4 5 5 5

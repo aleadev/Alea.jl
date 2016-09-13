@@ -22,4 +22,10 @@ function tensorise(xs::Array...)
   X
 end
 
-export tensorise
+colvec{T}(x::Vector{T}) = reshape(x, (length(x), 1))::Matrix{T}
+rowvec{T}(x::Vector{T}) = reshape(x, (1, length(x)))::Matrix{T}
+
+export
+  tensorise,
+  colvec,
+  rowvec

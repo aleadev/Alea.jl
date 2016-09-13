@@ -1,11 +1,12 @@
 using Alea, FactCheck
 
+facts("tensorise") do
+
+end
+
 facts("smolyak") do
 
-  colvec{T}(x::Vector{T}) = reshape(x, (length(x), 1))
-  rowvec{T}(x::Vector{T}) = reshape(x, (1, length(x)))
 
-  typealias Rule1d Tuple{Vector{Float64}, Vector{Float64}}
   (G, factors) = smolyak_grid(3, 2)
   on01 = (x::Vector{Float64},w::Vector{Float64}) -> ((x+1)/2,w)::Rule1d
   rules = [on01(gauss_rule(LegendrePolynomials(), i)...)::Rule1d for i=1:5]

@@ -29,6 +29,7 @@ smolyak_grid(d::Integer, n::Integer) = begin
 end
 
 collect_rules(I, factors, rules) = begin
+  #TODO Make faster by preallocating space for x and w
   d = size(I, 2)
   n = size(I, 1)
   #@assert d==length(rules)

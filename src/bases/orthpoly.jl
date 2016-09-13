@@ -94,37 +94,20 @@ issymmetric(::ChebyshevUPolynomials) = true
 
 
 
-
+import Alea.Quadrature.gauss_rule
 function gauss_rule(basis::PolynomialSystem, n::Integer)
-  # W. GAUTSCHI, ORTHOGONAL POLYNOMIALS AND QUADRATURE, Electronic
-  # Transactions on Numerical Analysis, Volume 9, 1999, pp. 65-76.
-
   α, β = rc_array_monic(basis, n-1)
 
-  # set up Jacobi matrix and compute eigenvalues
-  J = SymTridiagonal(α, √β)
-  #J = float(diagm(α) + diagm(√β,1) + diagm(√β,-1))
-  x, V = eig(J)
-  w = vec(V[1,:]'.^2)
-  w = w / sum(w);
-
-  # symmetrise
-  if issymmetric(basis)
-      x=0.5*(x-reverse(x));
-      w=0.5*(w+reverse(w));
-  end
-  return (x::Vector{Float64},w::Vector{Float64})
+  gauss_rule((α, β))
 end
 
-
-export PolynomialSystem
-export evaluate
-export recurrence_coeff
-export issymmetric
-export gauss_rule
-
-export HermitePolynomials
-export LegendrePolynomials
-export LaguerrePolynomials
-export ChebyshevTPolynomials
-export ChebyshevUPolynomials
+export
+  PolynomialSystem,
+  evaluate,
+  recurrence_coeff,
+  issymmetric,
+  HermitePolynomials,
+  LegendrePolynomials,
+  LaguerrePolynomials,
+  ChebyshevTPolynomials,
+  ChebyshevUPolynomials
